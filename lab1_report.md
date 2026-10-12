@@ -3,7 +3,7 @@
 ## 1. Description of the problem
 
 We are given a set of `n = 200` nodes (instances `TSPA`, `TSPB` in `data/TSPA.csv`, `data/TSPB.csv`).
-Each row is `x;y;cost`:
+Each row is `x;y;cost` (the files have no header line):
 
 - `(x, y)` — position in the plane,
 - `cost[i] >= 0` — price paid if node `i` is visited.
@@ -132,14 +132,14 @@ GREEDY-CYCLE(s, D, C, k):
 
 | instance | method | min | max | mean |
 |---|---|---|---|---|
-| TSPA | random | 234051 | 297098 | 262602.9 |
-| TSPA | nearest_neighbor_at_end | 83182 | 89433 | 85108.5 |
-| TSPA | nearest_neighbor_anywhere | **71179** | 75450 | 73178.4 |
-| TSPA | greedy_cycle | 71488 | **74410** | **72636.0** |
-| TSPB | random | 190279 | 238119 | 213699.7 |
-| TSPB | nearest_neighbor_at_end | 52319 | 59030 | 54390.4 |
-| TSPB | nearest_neighbor_anywhere | **44417** | **53438** | **45870.3** |
-| TSPB | greedy_cycle | 49001 | 57324 | 51400.6 |
+| TSPA | random | 237157 | 289146 | 263626.5 |
+| TSPA | nearest_neighbor_at_end | 84362 | 90075 | 87476.6 |
+| TSPA | nearest_neighbor_anywhere | **72328** | 77022 | 74347.0 |
+| TSPA | greedy_cycle | 72590 | **75281** | **73793.4** |
+| TSPB | random | 188874 | 232618 | 207052.8 |
+| TSPB | nearest_neighbor_at_end | 56007 | **63166** | **59397.3** |
+| TSPB | nearest_neighbor_anywhere | **52915** | 66164 | 59480.3 |
+| TSPB | greedy_cycle | 55655 | 63734 | 59649.9 |
 
 
 
@@ -156,28 +156,28 @@ Overview grid (2 instances × 4 methods):
 
 Individual best tours:
 
-#### TSPA / random — best=234051
+#### TSPA / random — best=237157
 ![TSPA random](figures/lab1_TSPA_random.png)
 
-#### TSPA / nearest_neighbor_at_end — best=83182
+#### TSPA / nearest_neighbor_at_end — best=84362
 ![TSPA NN-end](figures/lab1_TSPA_nearest_neighbor_at_end.png)
 
-#### TSPA / nearest_neighbor_anywhere — best=71179
+#### TSPA / nearest_neighbor_anywhere — best=72328
 ![TSPA NN-anywhere](figures/lab1_TSPA_nearest_neighbor_anywhere.png)
 
-#### TSPA / greedy_cycle — best=71488
+#### TSPA / greedy_cycle — best=72590
 ![TSPA greedy-cycle](figures/lab1_TSPA_greedy_cycle.png)
 
-#### TSPB / random — best=190279
+#### TSPB / random — best=188874
 ![TSPB random](figures/lab1_TSPB_random.png)
 
-#### TSPB / nearest_neighbor_at_end — best=52319
+#### TSPB / nearest_neighbor_at_end — best=56007
 ![TSPB NN-end](figures/lab1_TSPB_nearest_neighbor_at_end.png)
 
-#### TSPB / nearest_neighbor_anywhere — best=44417
+#### TSPB / nearest_neighbor_anywhere — best=52915
 ![TSPB NN-anywhere](figures/lab1_TSPB_nearest_neighbor_anywhere.png)
 
-#### TSPB / greedy_cycle — best=49001
+#### TSPB / greedy_cycle — best=55655
 ![TSPB greedy-cycle](figures/lab1_TSPB_greedy_cycle.png)
 
 
@@ -188,51 +188,65 @@ Individual best tours:
 
 **random:**
 ```python
-[195, 108, 8, 144, 35, 18, 93, 74, 11, 165, 188, 16, 44, 26, 76, 10, 198, 31, 180, 41, 184, 13, 9, 79, 80, 4, 78, 133, 132, 138, 45, 50, 143, 113, 84, 24, 59, 166, 86, 157, 85, 156, 168, 53, 183, 5, 181, 105, 194, 155, 103, 193, 130, 70, 68, 58, 49, 123, 42, 116, 148, 110, 22, 38, 52, 167, 139, 19, 51, 191, 30, 63, 14, 81, 23, 73, 87, 152, 178, 90, 164, 189, 32, 117, 64, 118, 151, 199, 21, 40, 185, 196, 176, 150, 140, 96, 83, 0, 153, 60]
+[12, 18, 10, 187, 168, 160, 183, 171, 99, 80, 102, 144, 172, 88, 22, 135, 4, 92, 188, 59, 62, 86, 89, 151, 50, 35, 46, 190, 123, 111, 129, 198, 152, 25, 15, 98, 74, 126, 79, 84, 31, 191, 43, 20, 23, 28, 87, 109, 186, 78, 136, 29, 145, 56, 139, 162, 130, 9, 179, 189, 27, 195, 34, 142, 3, 181, 70, 149, 39, 150, 45, 167, 108, 7, 133, 105, 124, 184, 19, 52, 51, 65, 76, 82, 132, 166, 196, 42, 5, 21, 153, 66, 36, 97, 119, 161, 180, 158, 67, 17]
 ```
 
 **nearest_neighbor_at_end:**
 ```python
-[124, 94, 63, 53, 180, 154, 135, 123, 65, 116, 59, 115, 139, 193, 41, 42, 160, 34, 22, 18, 108, 69, 159, 181, 184, 177, 54, 30, 48, 43, 151, 176, 80, 79, 133, 162, 51, 137, 183, 143, 0, 117, 46, 68, 93, 140, 36, 163, 199, 146, 195, 103, 5, 96, 118, 149, 131, 112, 4, 84, 35, 10, 190, 127, 70, 101, 97, 1, 152, 120, 78, 145, 185, 40, 165, 90, 81, 113, 175, 171, 16, 31, 44, 92, 57, 106, 49, 144, 62, 14, 178, 52, 55, 129, 2, 75, 86, 26, 100, 121]
+[54, 9, 33, 36, 177, 67, 144, 53, 135, 58, 134, 176, 174, 106, 89, 107, 57, 182, 151, 93, 50, 3, 1, 164, 178, 29, 136, 186, 184, 47, 159, 130, 153, 78, 88, 193, 170, 146, 75, 64, 150, 42, 113, 43, 85, 142, 8, 131, 84, 158, 192, 181, 114, 141, 180, 132, 76, 80, 48, 31, 63, 149, 168, 97, 127, 187, 30, 123, 152, 108, 60, 116, 49, 11, 119, 160, 83, 90, 51, 16, 35, 87, 45, 140, 52, 179, 185, 28, 102, 156, 157, 71, 91, 38, 100, 4, 112, 139, 115, 5]
 ```
 
 **nearest_neighbor_anywhere:**
 ```python
-[68, 46, 115, 139, 193, 41, 5, 42, 181, 159, 69, 108, 18, 22, 146, 34, 160, 48, 54, 177, 10, 190, 4, 112, 84, 35, 184, 43, 116, 65, 59, 118, 51, 151, 133, 162, 123, 127, 70, 135, 180, 154, 53, 100, 26, 86, 75, 44, 25, 16, 171, 175, 113, 56, 31, 78, 145, 179, 92, 57, 52, 185, 119, 40, 196, 81, 90, 165, 106, 178, 14, 144, 62, 9, 148, 102, 49, 55, 129, 120, 2, 101, 1, 97, 152, 124, 94, 63, 79, 80, 176, 137, 23, 186, 89, 183, 143, 0, 117, 93]
+[104, 129, 69, 127, 97, 168, 116, 149, 63, 11, 49, 160, 83, 123, 100, 152, 108, 60, 31, 48, 80, 91, 157, 71, 4, 76, 132, 180, 28, 102, 185, 35, 156, 51, 16, 67, 144, 140, 53, 179, 52, 177, 36, 33, 9, 54, 131, 174, 8, 164, 186, 136, 163, 29, 101, 178, 1, 169, 3, 50, 147, 47, 93, 106, 42, 89, 113, 130, 159, 146, 170, 153, 193, 78, 88, 107, 64, 57, 182, 151, 150, 176, 72, 134, 84, 58, 158, 192, 181, 114, 135, 73, 45, 87, 141, 187, 30, 189, 2, 171]
 ```
 
 **greedy_cycle:**
 ```python
-[0, 46, 68, 139, 193, 41, 115, 5, 42, 181, 159, 69, 108, 18, 22, 146, 34, 160, 48, 54, 30, 177, 10, 190, 4, 112, 84, 35, 184, 43, 116, 65, 59, 118, 51, 151, 133, 162, 123, 127, 70, 135, 180, 154, 53, 100, 26, 86, 75, 44, 25, 16, 171, 175, 113, 56, 31, 78, 145, 179, 92, 57, 52, 185, 119, 40, 196, 81, 90, 165, 106, 178, 14, 144, 62, 9, 148, 102, 49, 55, 129, 120, 2, 101, 1, 97, 152, 124, 94, 63, 79, 80, 176, 137, 23, 186, 89, 183, 143, 117]
+[31, 116, 149, 168, 63, 11, 49, 60, 108, 152, 100, 90, 123, 83, 160, 97, 127, 69, 171, 2, 189, 30, 187, 141, 87, 45, 73, 135, 114, 181, 192, 158, 58, 84, 134, 72, 176, 150, 151, 182, 57, 64, 107, 88, 78, 193, 153, 170, 146, 159, 130, 113, 89, 42, 106, 93, 47, 147, 50, 3, 169, 1, 178, 101, 29, 163, 136, 186, 164, 142, 8, 174, 131, 54, 9, 33, 36, 177, 52, 179, 53, 140, 144, 67, 16, 51, 156, 35, 185, 102, 28, 180, 132, 76, 4, 71, 157, 91, 80, 48]
 ```
 
 ### TSPB
 
 **random:**
 ```python
-[93, 111, 58, 38, 36, 16, 153, 39, 159, 141, 87, 102, 77, 138, 171, 20, 17, 100, 147, 83, 132, 158, 184, 193, 73, 143, 26, 130, 135, 145, 8, 182, 0, 131, 97, 95, 62, 178, 37, 170, 57, 160, 85, 115, 53, 49, 84, 66, 172, 110, 190, 176, 43, 99, 118, 5, 164, 54, 1, 78, 152, 64, 124, 189, 185, 117, 165, 65, 151, 107, 13, 150, 80, 104, 173, 195, 119, 47, 29, 149, 42, 144, 86, 155, 168, 120, 10, 121, 79, 142, 186, 101, 75, 113, 76, 31, 11, 188, 61, 9]
+[194, 74, 135, 84, 12, 176, 23, 80, 109, 54, 193, 72, 48, 98, 122, 111, 33, 152, 181, 175, 79, 60, 15, 121, 118, 16, 198, 70, 180, 1, 90, 55, 150, 10, 50, 160, 13, 43, 106, 8, 167, 30, 32, 147, 166, 87, 143, 0, 173, 195, 20, 117, 146, 95, 185, 66, 44, 27, 94, 99, 86, 127, 129, 83, 169, 153, 93, 97, 172, 57, 42, 151, 179, 138, 29, 59, 192, 105, 171, 159, 5, 49, 199, 7, 130, 38, 189, 123, 6, 3, 162, 161, 25, 40, 36, 156, 107, 110, 77, 18]
 ```
 
 **nearest_neighbor_at_end:**
 ```python
-[16, 1, 117, 31, 54, 193, 190, 80, 175, 5, 177, 36, 61, 141, 77, 153, 163, 176, 113, 166, 86, 185, 179, 94, 47, 148, 20, 60, 28, 140, 183, 152, 18, 62, 124, 106, 143, 0, 29, 109, 35, 33, 138, 11, 168, 169, 188, 70, 3, 145, 15, 155, 189, 34, 55, 95, 130, 99, 22, 66, 154, 57, 172, 194, 103, 127, 89, 137, 114, 165, 187, 146, 81, 111, 8, 104, 21, 82, 144, 160, 139, 182, 25, 121, 90, 122, 135, 63, 40, 107, 100, 133, 10, 147, 6, 134, 51, 98, 118, 74]
+[32, 89, 57, 76, 54, 127, 129, 90, 153, 20, 14, 2, 110, 118, 56, 114, 196, 10, 148, 143, 78, 192, 162, 104, 185, 184, 3, 151, 69, 172, 133, 120, 96, 121, 198, 48, 72, 46, 86, 117, 160, 136, 8, 21, 154, 140, 47, 170, 125, 177, 6, 132, 29, 197, 175, 134, 45, 60, 40, 71, 155, 97, 115, 180, 65, 28, 149, 145, 158, 116, 147, 42, 50, 130, 30, 183, 38, 64, 85, 59, 167, 51, 87, 179, 82, 88, 171, 99, 67, 24, 34, 181, 152, 73, 98, 27, 135, 75, 79, 156]
 ```
 
 **nearest_neighbor_anywhere:**
 ```python
-[40, 107, 100, 63, 122, 135, 38, 27, 16, 1, 156, 198, 117, 193, 31, 54, 73, 136, 190, 80, 162, 175, 78, 142, 45, 5, 177, 104, 8, 111, 82, 21, 61, 36, 91, 141, 77, 81, 153, 187, 163, 89, 127, 103, 113, 176, 194, 166, 86, 95, 130, 99, 22, 185, 179, 66, 94, 47, 148, 60, 20, 28, 149, 4, 140, 183, 152, 170, 34, 55, 18, 62, 124, 106, 143, 35, 109, 0, 29, 160, 33, 138, 11, 139, 168, 195, 145, 15, 3, 70, 13, 132, 169, 188, 6, 147, 191, 90, 51, 121]
+[110, 2, 14, 20, 74, 153, 182, 52, 90, 129, 127, 80, 54, 192, 162, 104, 76, 185, 57, 89, 86, 46, 72, 3, 184, 173, 151, 122, 117, 8, 160, 69, 172, 136, 133, 120, 156, 43, 48, 96, 198, 121, 130, 191, 50, 42, 147, 116, 37, 146, 13, 149, 28, 145, 65, 158, 177, 125, 26, 170, 197, 36, 132, 29, 6, 180, 115, 155, 71, 175, 134, 45, 157, 60, 40, 141, 97, 154, 140, 47, 38, 21, 176, 30, 183, 189, 168, 64, 59, 85, 51, 73, 167, 152, 34, 24, 181, 179, 87, 82]
 ```
 
 **greedy_cycle:**
 ```python
-[85, 51, 121, 131, 135, 63, 122, 133, 10, 90, 191, 147, 6, 188, 169, 132, 13, 161, 70, 3, 15, 145, 195, 168, 29, 109, 35, 0, 111, 81, 153, 163, 180, 176, 86, 95, 128, 106, 143, 124, 62, 18, 55, 34, 170, 152, 183, 140, 4, 149, 28, 20, 60, 148, 47, 94, 66, 22, 130, 99, 185, 179, 172, 166, 194, 113, 114, 137, 103, 89, 127, 165, 187, 146, 77, 97, 141, 91, 36, 61, 175, 78, 142, 45, 5, 177, 82, 87, 21, 8, 104, 56, 144, 160, 33, 138, 182, 11, 139, 134]
+[174, 36, 197, 6, 180, 115, 170, 97, 140, 47, 155, 71, 175, 134, 45, 157, 60, 141, 40, 33, 64, 21, 189, 168, 69, 160, 172, 136, 133, 120, 8, 117, 72, 46, 86, 184, 3, 173, 122, 151, 98, 111, 27, 135, 76, 185, 162, 192, 80, 52, 182, 20, 74, 2, 93, 110, 118, 14, 153, 90, 129, 127, 54, 104, 57, 89, 156, 43, 48, 96, 198, 121, 63, 130, 191, 183, 30, 176, 38, 154, 26, 125, 177, 138, 158, 145, 149, 147, 42, 116, 37, 146, 13, 28, 65, 178, 103, 29, 132, 1]
 ```
 
 
 ## 5. Solution checking
 
 
-All 8 best tours return were checked manually with solution-checker spreadsheet and are correct.
+All 8 best tours were checked manually with the solution-checker spreadsheet
+(`*`_ids.csv pasted into `F3:F102`, total read from `K2`) and match the costs above.
+
+```text
+TSPA/random: best_ok=True best_cost=237157
+TSPA/nearest_neighbor_at_end: best_ok=True best_cost=84362
+TSPA/nearest_neighbor_anywhere: best_ok=True best_cost=72328
+TSPA/greedy_cycle: best_ok=True best_cost=72590
+TSPB/random: best_ok=True best_cost=188874
+TSPB/nearest_neighbor_at_end: best_ok=True best_cost=56007
+TSPB/nearest_neighbor_anywhere: best_ok=True best_cost=52915
+TSPB/greedy_cycle: best_ok=True best_cost=55655
+```
+
+No duplicates, no out-of-range indices, no length violations.
 
 ## 6. Source code
 
@@ -241,17 +255,22 @@ https://github.com/skalskidaniel/evolutionary-computation/blob/main/lab1.ipynb
 ## 7. Conclusions
 
 1. **Greedy >> random.** Even the weakest greedy (NN-END) improves over the best of
-   200 random tours by 2.8× (TSPA) and 3.6× (TSPB).
-2. **Insertion position matters more than closure awareness on these instances.**
-   NN-ANYWHERE beats NN-END everywhere significantly . Allowing interior insertions removes
-   the forced tail order and avoids paying one huge closing edge. This is the single
-   cheapest algorithmic upgrade (same greedy idea, `O(k)` positions instead of 1).
+   200 random tours by 2.8× (TSPA) and 3.4× (TSPB). For this selective-TSP, blind
+   sampling is not a viable strategy — geometry + costs must guide construction.
+2. **Insertion position matters, but less universally than before.**
+   NN-ANYWHERE beats NN-END on the best tour in both instances (TSPA -14.3%, TSPB -5.5%)
+   and clearly on TSPA mean (-15.0%), while on TSPB mean the two tie (59397.3 vs 59480.3).
+   Allowing interior insertions removes the forced tail order and avoids paying one huge closing edge.
 3. **Cycle vs. path-anywhere is instance-dependent.** On TSPA, greedy-cycle wins on
-   mean/worst-case, while on TSPB it loses in terms of every measure.
+   mean (73793.4 vs 74347.0) and worst case
+   (75281 vs 77022) — more robust, less
+   start-dependent. On TSPB, NN-ANYWHERE wins on best (52915 vs
+   55655, -4.9%) and mean (-0.3%), while greedy-cycle keeps a better
+   worst case (63734 vs 66164). No universal winner.
 4. **Start-node sensitivity is real but bounded.** Greedy ranges are narrow
-   (TSPA cycle: 71488–74410, ±2%; TSPB anywhere: 44417–53438, wider, ~20% with one
+   (TSPA cycle: 72590–75281, about ±2%; TSPB anywhere: 52915–66164, wider, ~25% with one
    outlier tail). Multi-start (200 runs) is therefore mandatory; single-start greedy
-   would be a lottery.
+   would be a lottery, especially on TSPB.
 5. **Cost term is load-bearing.** All deltas include `+C[c]`. Without it, heuristics
    would chase pure geometry and pick dense regions. Visualizations confirm winners
    thread through low-cost regions, not just short edges.
