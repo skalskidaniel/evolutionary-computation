@@ -1,4 +1,6 @@
 # Lab 2 — Greedy Regret Heuristics for Selective TSP with Node Costs
+Authors: Wiktor Talarek 160225, Daniel Skalski 160261
+s
 
 ## 1. Description of the problem
 
