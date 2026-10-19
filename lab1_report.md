@@ -233,7 +233,7 @@ Individual best tours:
 
 
 All 8 best tours were checked manually with the solution-checker spreadsheet
-(`*`_ids.csv pasted into `F3:F102`, total read from `K2`) and match the costs above.
+(`solutions/{instance}_{method}_ids.csv` pasted into `F3:F102`, total read from `K2`) and match the costs above.
 
 ```text
 TSPA/random: best_ok=True best_cost=237157

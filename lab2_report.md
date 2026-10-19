@@ -54,27 +54,27 @@ Common notation: `n` nodes, select `k`, `D` distance matrix, `C` node costs, `us
 
 The Lab 1 baselines (`random_tour`, `nearest_neighbor_at_end`, `nearest_neighbor_anywhere`, `greedy_cycle`) are reused unchanged for the comparison; only the new Lab 2 algorithms are described below.
 
-### 2.1 Insertion deltas
-
-Path (extended NN) insertion of candidate `c` into path `T = (t0, …, t{m-1})`:
-before first `D[c,t0]`, after last `D[t{m-1},c]`, inside edge `(tj,t{j+1})`: `D[tj,c] + D[c,t{j+1}] − D[tj,t{j+1}]`, each plus `C[c]`.
-Cycle insertion on edge `(tj, t{(j+1) mod m})`: `D[tj,c] + D[c,t{(j+1) mod m}] − D[tj,t{(j+1) mod m}] + C[c]` (for `|T| = 1`: `2·D[t0,c] + C[c]`).
-
-### 2.2 Greedy 2-regret (`greedy_2regret_nn`, `greedy_2regret_cycle`)
+### 2.1 Greedy 2-regret (`greedy_2regret_nn`, `greedy_2regret_cycle`)
 
 ```text
-REGRET(s, D, C, k):
+DELTAS(c, T):                       # T = (t0, ..., t{m-1}); every value includes C[c]
+    path  (extended NN): D[c,t0] | D[t{m-1},c] | D[tj,c] + D[c,t{j+1}] - D[tj,t{j+1}]
+                         # positions: prepend, append, inside each path edge
+    cycle (closed):      D[tj,c] + D[c,t{(j+1) mod m}] - D[tj,t{(j+1) mod m}]
+                         # one position per cycle edge; |T| = 1: 2*D[t0,c]
+
+REGRET(s, D, C, k, topology):
     tour <- [s]; used[s] <- true
     repeat k-1 times:
         for each c not used:
-            deltas <- insertion cost of c over all feasible positions (+C[c])
+            deltas <- DELTAS(c, tour) for the given topology
             regret(c) <- 2nd_best(deltas) - best(deltas)   # 0 if a single position
         c* <- argmax regret (tie-break: smaller best delta)
         insert c* at its best position; used[c*] <- true
     return tour
 ```
 
-### 2.3 Weighted sum — 2-regret + best change (`greedy_weighted_nn`, `greedy_weighted_cycle`)
+### 2.2 Weighted sum — 2-regret + best change (`greedy_weighted_nn`, `greedy_weighted_cycle`)
 
 Same loop, but the candidate maximizes:
 
@@ -311,8 +311,8 @@ https://github.com/skalskidaniel/evolutionary-computation/blob/main/lab2.ipynb
 ## 7. Conclusions
 
 1. **Regret alone fails here; regret + price wins.** Pure 2-regret loses even to the weakest Lab 1 greedy (TSPA 110950 vs 84362; TSPB 68150 vs 56007 on best), because it chases insertion urgency while ignoring absolute cost. Weighting regret against best change (1:1) turns the same construction into the overall winner on both instances.
-2. **Weighted regret beats Lab 1 everywhere that matters.** Best tour: 72328 → 72011 (TSPA), 52915 → 50485 (TSPB, −4.6%). Best mean: 73793.4 → 73353.5 (TSPA), 59480.3/59397.3 → 55698.9 (TSPB). The Lab 1 ranking is otherwise preserved: NN-anywhere still beats NN-end on best in both instances.
+2. **Weighted regret beats Lab 1 everywhere that matters.** Best tour: 72328 → 72011 (TSPA), 52915 → 50485 (TSPB, −4.6%). Best mean: 73793.4 → 73353.5 (TSPA), 59480.3/59397.3 → 55698.9 (TSPB).
 3. **Base matters by instance.** TSPA favors the cycle base (weighted-cycle takes best and mean); TSPB favors the path base for best/mean, with the cycle keeping the better worst case. Never assume one insertion topology dominates — the selection component breaks that intuition.
 4. **Weights are robust, not touchy.** Across `(1.0,1.0)`, `(1.0,0.5)`, `(0.5,1.0)` the best tour moves by ~2% on TSPA; on TSPB the regret-heavy path config even takes the best mean (54710.1). Equal weights are a safe default; tuning buys single percent, not tens.
 5. **Cost term stays load-bearing.** All deltas include `+C[c]`; the pure-regret failure mode is exactly what happens when urgency outweighs price. Visualizations confirm winners thread through low-cost regions, not just short edges.
-6. **Next steps:** local search (2-opt) on top of weighted starts; regret variants with more than two positions (k-regret); adaptive weights during construction.
+
