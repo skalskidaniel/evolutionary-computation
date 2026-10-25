@@ -112,7 +112,8 @@ Each method is run 200 times.
 Each of the 8 local-search methods is run 200 times. The 8 constructive methods from Labs 1-2 are
 re-run for reference (random: 200 solutions; constructive: from each of the 200 start nodes).
 Two tables are reported: objective-function values and running times. Times are total wall-clock
-seconds for the 200 runs; the figure in parentheses is the per-run initial-solution construction time.
+seconds for the 200 runs; the figure in parentheses is the initial-solution construction time
+(total for constructive methods; mean per run for local-search methods).
 
 ### 3.1 Results: objective function (mean (min-max))
 
@@ -140,24 +141,24 @@ seconds for the 200 runs; the figure in parentheses is the per-run initial-solut
 | Method | TSPA | TSPB |
 | :--- | :--- | :--- |
 | Random | 0.00 (0.00) | 0.00 (0.00) |
-| NN at end | 0.07 (0.07) | 0.07 (0.07) |
-| NN anywhere | 1.01 (1.01) | 0.98 (0.98) |
-| Greedy cycle | 1.35 (1.35) | 1.30 (1.30) |
-| 2-regret NN | 2.69 (2.69) | 2.62 (2.62) |
-| 2-regret cycle | 3.03 (3.03) | 3.02 (3.01) |
-| Weighted NN | 2.70 (2.70) | 2.68 (2.68) |
-| Weighted cycle | 3.06 (3.06) | 3.00 (3.00) |
-| Steepest swap / random start | 15.01 (0.00) | 15.16 (0.00) |
-| Steepest 2-opt / random start | 15.09 (0.00) | 15.29 (0.00) |
-| Steepest swap / greedy start | 3.60 (0.02) | 4.17 (0.01) |
-| Steepest 2-opt / greedy start | 3.60 (0.02) | 4.17 (0.01) |
-| Greedy swap / random start | 9.45 (0.00) | 8.50 (0.00) |
-| Greedy 2-opt / random start | 9.13 (0.00) | 8.14 (0.00) |
-| Greedy swap / greedy start | 4.69 (0.02) | 5.68 (0.02) |
-| Greedy 2-opt / greedy start | 4.62 (0.02) | 5.70 (0.02) |
+| NN at end | 0.04 (0.04) | 0.04 (0.04) |
+| NN anywhere | 0.79 (0.79) | 0.83 (0.83) |
+| Greedy cycle | 1.15 (1.15) | 1.20 (1.20) |
+| 2-regret NN | 1.16 (1.16) | 1.17 (1.17) |
+| 2-regret cycle | 1.54 (1.54) | 1.62 (1.62) |
+| Weighted NN | 1.13 (1.13) | 1.19 (1.19) |
+| Weighted cycle | 1.53 (1.52) | 1.65 (1.65) |
+| Steepest swap / random start | 11.85 (0.00) | 12.08 (0.00) |
+| Steepest 2-opt / random start | 11.84 (0.00) | 12.27 (0.00) |
+| Steepest swap / greedy start | 1.92 (0.01) | 2.46 (0.01) |
+| Steepest 2-opt / greedy start | 1.92 (0.01) | 2.51 (0.01) |
+| Greedy swap / random start | 5.81 (0.00) | 5.69 (0.00) |
+| Greedy 2-opt / random start | 5.66 (0.00) | 5.03 (0.00) |
+| Greedy swap / greedy start | 2.51 (0.01) | 3.14 (0.01) |
+| Greedy 2-opt / greedy start | 2.50 (0.01) | 3.17 (0.01) |
 
 Reading: Greedy local search is faster than steepest from random starts (e.g. TSPA greedy-swap-random
-9.45 s vs steepest-swap-random 15.01 s), because its lazy early-exit evaluates far fewer deltas per
+5.81 s vs steepest-swap-random 11.85 s), because its lazy early-exit evaluates far fewer deltas per
 iteration. From an already-good greedy start both converge quickly; steepest then needs fewer
 iterations, so the gap narrows or steepest is marginally quicker on the local-search phase. In all
 cases the total running time is dominated by the 200 runs, and Greedy never exceeds Steepest by more
@@ -169,9 +170,55 @@ Node colour indicates its price (viridis colourmap, colourbar = node cost). Back
 200 nodes. The best tour is drawn as a closed black polyline through the 100 selected nodes; the
 visited nodes are shown as coloured points with a black edge (no separate red dots).
 
-Overview grid (2 instances × 16 methods):
+Individual best tours for the eight local-search methods:
 
-![Best tours grid](figures/lab3_best_grid.png)
+#### TSPA / steepest swap / random — best=73817
+![TSPA steepest swap / random](figures/lab3_TSPA_steepest_swap_random.png)
+
+#### TSPA / steepest 2-opt / random — best=73772
+![TSPA steepest 2-opt / random](figures/lab3_TSPA_steepest_opt_random.png)
+
+#### TSPA / steepest swap / greedy — best=71955
+![TSPA steepest swap / greedy](figures/lab3_TSPA_steepest_swap_greedy.png)
+
+#### TSPA / steepest 2-opt / greedy — best=71955
+![TSPA steepest 2-opt / greedy](figures/lab3_TSPA_steepest_opt_greedy.png)
+
+#### TSPA / greedy swap / random — best=73682
+![TSPA greedy swap / random](figures/lab3_TSPA_greedy_swap_random.png)
+
+#### TSPA / greedy 2-opt / random — best=74143
+![TSPA greedy 2-opt / random](figures/lab3_TSPA_greedy_opt_random.png)
+
+#### TSPA / greedy swap / greedy — best=71955
+![TSPA greedy swap / greedy](figures/lab3_TSPA_greedy_swap_greedy.png)
+
+#### TSPA / greedy 2-opt / greedy — best=71955
+![TSPA greedy 2-opt / greedy](figures/lab3_TSPA_greedy_opt_greedy.png)
+
+#### TSPB / steepest swap / random — best=50247
+![TSPB steepest swap / random](figures/lab3_TSPB_steepest_swap_random.png)
+
+#### TSPB / steepest 2-opt / random — best=50669
+![TSPB steepest 2-opt / random](figures/lab3_TSPB_steepest_opt_random.png)
+
+#### TSPB / steepest swap / greedy — best=52542
+![TSPB steepest swap / greedy](figures/lab3_TSPB_steepest_swap_greedy.png)
+
+#### TSPB / steepest 2-opt / greedy — best=52542
+![TSPB steepest 2-opt / greedy](figures/lab3_TSPB_steepest_opt_greedy.png)
+
+#### TSPB / greedy swap / random — best=50271
+![TSPB greedy swap / random](figures/lab3_TSPB_greedy_swap_random.png)
+
+#### TSPB / greedy 2-opt / random — best=50831
+![TSPB greedy 2-opt / random](figures/lab3_TSPB_greedy_opt_random.png)
+
+#### TSPB / greedy swap / greedy — best=52542
+![TSPB greedy swap / greedy](figures/lab3_TSPB_greedy_swap_greedy.png)
+
+#### TSPB / greedy 2-opt / greedy — best=52542
+![TSPB greedy 2-opt / greedy](figures/lab3_TSPB_greedy_opt_greedy.png)
 
 ## 5. Best solutions as node index lists (0-based)
 
@@ -397,7 +444,7 @@ https://github.com/skalskidaniel/evolutionary-computation/blob/main/lab3.ipynb
    (vs 50485 best constructive). Random starts improve substantially (e.g. TSPA 76189 vs random 263627).
 
 2. **Greedy is faster than steepest from random starts.** The lazy early-exit evaluates far fewer deltas
-   per iteration (TSPA: greedy-swap-random 9.45 s vs steepest-swap-random 15.01 s). From an already-good
+   per iteration (TSPA: greedy-swap-random 5.81 s vs steepest-swap-random 11.85 s). From an already-good
    greedy start both converge quickly and the difference is small.
 
 3. **Intra-route move choice matters little at convergence.** Swap and 2-opt reach essentially the same
