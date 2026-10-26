@@ -52,14 +52,20 @@ at end, nearest-neighbor anywhere, greedy cycle, greedy 2-regret (NN and cycle),
 STEEPEST(tour, used, D, C, k, n):
     repeat:
         best_delta <- 0; best_move <- none
-        # inter-route: exchange one selected node with one unselected node (always evaluated)
+        # inter-route: exchange one selected node with one unselected node
+        # delta_inter(p, u) = D[prev(p), u] + D[u, next(p)] - D[prev(p), tour[p]] - D[tour[p], next(p)] + C[u] - C[tour[p]]
         for each selected position p and each unselected node u:
-            d <- D[prev(p), u] + D[u, next(p)] - D[prev(p), tour[p]] - D[tour[p], next(p)] + C[u] - C[tour[p]]
+            d <- delta_inter(p, u)
             if d < best_delta: best_delta <- d; best_move <- (inter, p, u)
         # intra-route: only the kind selected by intra_kind (swap or 2-opt) is evaluated
         if intra_kind == swap:
+            # delta_swap(i, j) for exchanging nodes at positions i and j:
+            #   D[prev(i), tour[j]] + D[tour[j], next(i)] + D[prev(j), tour[i]] + D[tour[i], next(j)]
+            #   - D[prev(i), tour[i]] - D[tour[i], next(i)] - D[prev(j), tour[j]] - D[tour[j], next(j)]
+            #   (special cases for adjacent and wrap pairs (0, k-1))
             for each pair (i, j): d <- delta_swap(tour, i, j); if d < best_delta: record
         if intra_kind == 2-opt:
+            # delta_2opt(i, j) = D[tour[i], tour[j]] + D[tour[i+1], tour[j+1]] - D[tour[i], tour[i+1]] - D[tour[j], tour[j+1]]
             for each non-adjacent pair (i, j): d <- delta_2opt(tour, i, j); if d < best_delta: record
         if best_move is none: break
         apply best_move; cost <- cost + best_delta
@@ -76,6 +82,9 @@ built explicitly and no objective is recomputed from scratch.
 GREEDY(tour, used, D, C, k, n, rng, intra_kind):
     intra_kind in {swap, 2-opt} selects the single intra-route kind used;
     inter-route moves are always included.
+    # delta_inter(p, u) = D[prev(p), u] + D[u, next(p)] - D[prev(p), tour[p]] - D[tour[p], next(p)] + C[u] - C[tour[p]]
+    # delta_swap(i, j): exchange nodes at positions i and j (special cases for adjacent and wrap pairs (0, k-1))
+    # delta_2opt(i, j) = D[tour[i], tour[j]] + D[tour[i+1], tour[j+1]] - D[tour[i], tour[i+1]] - D[tour[j], tour[j+1]]
     repeat:
         improved <- false
         shuffle the two kinds: inter-route and the chosen intra-route kind
@@ -337,8 +346,7 @@ https://github.com/skalskidaniel/evolutionary-computation/blob/main/lab3.ipynb
 
 1. **Local search improves on constructive heuristics.** Starting from the greedy construction, steepest
    and greedy local search both reach about 71955 on TSPA (vs 72011 best constructive) and 52542 on TSPB
-   (vs 50485 best constructive). Random starts improve substantially (e.g. TSPA 75944 vs random 263627).
-
+   (vs 50485 best constructive).
 2. **Greedy minimizes evaluated moves per iteration.** Its lazy early-exit stops browsing a move kind as
    soon as an improving move is found (e.g. TSPA greedy-swap-random scans far fewer deltas than the full
    neighborhood steepest-swap-random evaluates each iteration). Wall-clock time is implementation
@@ -347,7 +355,7 @@ https://github.com/skalskidaniel/evolutionary-computation/blob/main/lab3.ipynb
    From an already-good greedy start both converge quickly and the difference is small.
 
 3. **Intra-route move choice matters little at convergence.** Swap and 2-opt reach essentially the same
-   final costs (both ≈ 71955 on TSPA, ≈ 52542 on TSPB from greedy starts); 2-opt explores edge exchanges,
+   final costs (both ~71955 on TSPA, ~52542 on TSPB from greedy starts); 2-opt explores edge exchanges,
    swap exchanges node positions.
 
 4. **Delta evaluation is essential.** Every move delta is computed in O(1) from the precomputed distance
