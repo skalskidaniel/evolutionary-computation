@@ -90,15 +90,11 @@ GREEDY(tour, used, D, C, k, n, rng, intra_kind):
     return tour, cost
 ```
 
-
-
 Move kinds are interleaved in a random order every iteration, so the search never always starts from
 a given kind (e.g. never always intra-route). Deltas are evaluated lazily: browsing stops as soon as an
 improving move is found, which minimizes the number of evaluated moves. The two-edges exchange excludes
 the wrap pair of edges that share the closing edge, and the two-nodes exchange handles adjacent and wrap
 pairs as special cases.
-
-
 
 ### 2.3 Starting solutions
 
@@ -120,7 +116,7 @@ seconds for the 200 runs; the figure in parentheses is the per-run initial-solut
 
 | Method | TSPA | TSPB |
 | :--- | :--- | :--- |
-| Random | 263626.5 (237157-289146) | 207213.3 (183098-226037) |
+| Random | 263626.5 (237157-289146) | 207023.5 (186439-231364) |
 | NN at end | 87476.6 (84362-90075) | 59397.3 (56007-63166) |
 | NN anywhere | 74347.0 (72328-77022) | 59480.3 (52915-66164) |
 | Greedy cycle | 73793.4 (72590-75281) | 59649.9 (55655-63734) |
@@ -128,37 +124,35 @@ seconds for the 200 runs; the figure in parentheses is the per-run initial-solut
 | 2-regret cycle | 120378.8 (112806-128089) | 72484.8 (68150-77274) |
 | Weighted NN | 75549.4 (72419-78504) | 55698.9 (50485-61406) |
 | Weighted cycle | 73353.5 (72011-75532) | 57863.3 (52731-63370) |
-| Steepest swap / random start | 89958.6 (82117-101055) | 65988.9 (60227-73008) |
-| Steepest 2-opt / random start | 76152.8 (74006-79627) | 52656.5 (**50299**-**54831**) |
+| Steepest swap / random start | 89958.6 (82117-101055) | 66252.6 (58560-75551) |
+| Steepest 2-opt / random start | 76152.8 (74006-79627) | 52652.4 (50821-55872) |
 | Steepest swap / greedy start | 73021.7 (**71955**-74861) | 57525.5 (52702-62933) |
 | Steepest 2-opt / greedy start | 73003.8 (**71955**-74861) | 57127.5 (52542-62301) |
-| Greedy swap / random start | 87915.1 (81335-95128) | 63959.6 (57674-69805) |
-| Greedy 2-opt / random start | 76011.1 (74008-78343) | **52475.7** (50398-55282) |
-| Greedy swap / greedy start | 73021.8 (**71955**-74861) | 57526.6 (52702-62933) |
-| Greedy 2-opt / greedy start | **72981.8** (**71955**-**74591**) | 57180.0 (52542-62462) |
+| Greedy swap / random start | 87692.3 (81049-96180) | 64222.3 (58556-72748) |
+| Greedy 2-opt / random start | 75944.0 (74165-78097) | **52507.0** (**50178**-**55159**) |
+| Greedy swap / greedy start | 73032.1 (**71955**-74877) | 57530.6 (52702-62933) |
+| Greedy 2-opt / greedy start | **72977.8** (**71955**-**74711**) | 57184.8 (52542-62500) |
 
 ### 3.2 Results: running times, total (initial-solution) seconds per 200 runs
 
 | Method | TSPA | TSPB |
 | :--- | :--- | :--- |
-| Random | 0.01 (0.00) | 0.01 (0.01) |
-| NN at end | 0.16 (0.16) | 0.12 (0.12) |
-| NN anywhere | 1.78 (1.78) | 1.85 (1.84) |
-| Greedy cycle | 2.86 (2.85) | 2.45 (2.45) |
-| 2-regret NN | 5.74 (5.73) | 4.49 (4.48) |
-| 2-regret cycle | 6.79 (6.78) | 5.17 (5.16) |
-| Weighted NN | 5.97 (5.97) | 4.57 (4.57) |
-| Weighted cycle | 5.90 (5.90) | 5.34 (5.33) |
-| Steepest swap / random start | 22.94 (0.00) | 23.75 (0.00) |
-| Steepest 2-opt / random start | 10.53 (0.00) | 10.54 (0.00) |
-| Steepest swap / greedy start | 5.89 (0.03) | 6.22 (0.03) |
-| Steepest 2-opt / greedy start | 6.72 (0.03) | 6.26 (0.03) |
-| Greedy swap / random start | 45.29 (0.00) | 34.06 (0.00) |
-| Greedy 2-opt / random start | 21.81 (0.00) | 18.47 (0.00) |
-| Greedy swap / greedy start | 8.36 (0.03) | 11.14 (0.03) |
-| Greedy 2-opt / greedy start | 7.52 (0.03) | 12.29 (0.04) |
-
-
+| Random | 0.01 (0.01) | 0.01 (0.00) |
+| NN at end | 0.17 (0.16) | 0.13 (0.13) |
+| NN anywhere | 2.11 (2.11) | 1.78 (1.78) |
+| Greedy cycle | 2.35 (2.35) | 2.35 (2.35) |
+| 2-regret NN | 5.55 (5.54) | 5.09 (5.09) |
+| 2-regret cycle | 5.65 (5.65) | 5.71 (5.70) |
+| Weighted NN | 4.72 (4.72) | 5.08 (5.08) |
+| Weighted cycle | 5.49 (5.49) | 5.60 (5.60) |
+| Steepest swap / random start | 27.03 (0.00) | 22.84 (0.00) |
+| Steepest 2-opt / random start | 13.70 (0.00) | 11.44 (0.00) |
+| Steepest swap / greedy start | 6.49 (0.03) | 7.32 (0.03) |
+| Steepest 2-opt / greedy start | 6.06 (0.03) | 6.04 (0.03) |
+| Greedy swap / random start | 24.03 (0.00) | 19.94 (0.00) |
+| Greedy 2-opt / random start | 24.06 (0.00) | 26.64 (0.00) |
+| Greedy swap / greedy start | 8.81 (0.03) | 13.50 (0.04) |
+| Greedy 2-opt / greedy start | 7.68 (0.03) | 13.43 (0.04) |
 
 ## 4. Visualization of best solutions
 
@@ -180,10 +174,10 @@ visited nodes are shown as coloured points with a black edge (no separate red do
 #### Steepest 2-opt / greedy start — best=71955
 ![TSPA steepest 2-opt / greedy](figures/lab3_TSPA_steepest_opt_greedy.png)
 
-#### Greedy swap / random start — best=81335
+#### Greedy swap / random start — best=81049
 ![TSPA greedy swap / random](figures/lab3_TSPA_greedy_swap_random.png)
 
-#### Greedy 2-opt / random start — best=74008
+#### Greedy 2-opt / random start — best=74165
 ![TSPA greedy 2-opt / random](figures/lab3_TSPA_greedy_opt_random.png)
 
 #### Greedy swap / greedy start — best=71955
@@ -194,10 +188,10 @@ visited nodes are shown as coloured points with a black edge (no separate red do
 
 ### TSPB
 
-#### Steepest swap / random start — best=60227
+#### Steepest swap / random start — best=58560
 ![TSPB steepest swap / random](figures/lab3_TSPB_steepest_swap_random.png)
 
-#### Steepest 2-opt / random start — best=50299
+#### Steepest 2-opt / random start — best=50821
 ![TSPB steepest 2-opt / random](figures/lab3_TSPB_steepest_opt_random.png)
 
 #### Steepest swap / greedy start — best=52702
@@ -206,10 +200,10 @@ visited nodes are shown as coloured points with a black edge (no separate red do
 #### Steepest 2-opt / greedy start — best=52542
 ![TSPB steepest 2-opt / greedy](figures/lab3_TSPB_steepest_opt_greedy.png)
 
-#### Greedy swap / random start — best=57674
+#### Greedy swap / random start — best=58556
 ![TSPB greedy swap / random](figures/lab3_TSPB_greedy_swap_random.png)
 
-#### Greedy 2-opt / random start — best=50398
+#### Greedy 2-opt / random start — best=50178
 ![TSPB greedy 2-opt / random](figures/lab3_TSPB_greedy_opt_random.png)
 
 #### Greedy swap / greedy start — best=52702
@@ -248,13 +242,13 @@ Below, for each instance and method, the cost and the ordered list of the 100 se
 [55, 101, 147, 37, 47, 130, 159, 146, 170, 153, 193, 78, 88, 107, 64, 57, 182, 138, 151, 42, 89, 113, 106, 150, 176, 72, 134, 84, 58, 158, 192, 181, 114, 135, 73, 45, 87, 141, 189, 2, 171, 187, 30, 161, 127, 97, 168, 63, 149, 116, 60, 49, 160, 83, 123, 100, 152, 108, 31, 48, 80, 91, 157, 71, 4, 76, 132, 180, 28, 102, 185, 35, 51, 16, 67, 144, 140, 53, 179, 52, 177, 36, 131, 33, 9, 54, 8, 174, 85, 93, 50, 3, 169, 1, 164, 186, 136, 184, 178, 29]
 ```
 
-**Greedy swap / random start:** cost=81335
+**Greedy swap / random start:** cost=81049
 
 ```python
 [130, 146, 159, 47, 1, 3, 50, 93, 89, 42, 151, 158, 58, 84, 177, 185, 35, 51, 139, 115, 112, 16, 67, 144, 179, 53, 140, 73, 45, 87, 141, 189, 2, 171, 187, 30, 4, 76, 132, 90, 100, 152, 108, 60, 123, 180, 28, 102, 135, 134, 176, 150, 107, 153, 193, 78, 88, 64, 57, 182, 192, 181, 114, 98, 161, 127, 97, 160, 83, 49, 168, 63, 149, 116, 31, 48, 80, 91, 157, 71, 52, 36, 99, 131, 33, 143, 62, 184, 178, 136, 39, 154, 186, 164, 9, 54, 8, 174, 106, 113]
 ```
 
-**Greedy 2-opt / random start:** cost=74008
+**Greedy 2-opt / random start:** cost=74165
 
 ```python
 [138, 111, 158, 192, 58, 181, 114, 135, 73, 45, 185, 102, 28, 180, 87, 141, 30, 187, 189, 2, 171, 92, 104, 129, 69, 127, 97, 95, 168, 116, 149, 63, 49, 60, 31, 48, 108, 152, 100, 123, 160, 83, 90, 132, 76, 38, 80, 91, 157, 71, 4, 51, 16, 156, 35, 67, 144, 140, 53, 179, 52, 177, 36, 33, 9, 54, 131, 84, 134, 72, 176, 174, 85, 50, 3, 164, 186, 136, 163, 29, 101, 178, 1, 169, 147, 47, 93, 130, 159, 153, 78, 88, 107, 89, 42, 106, 150, 151, 57, 182]
@@ -274,13 +268,13 @@ Below, for each instance and method, the cost and the ordered list of the 100 se
 
 ### TSPB
 
-**Steepest swap / random start:** cost=60227
+**Steepest swap / random start:** cost=58560
 
 ```python
 [71, 60, 157, 45, 134, 175, 36, 197, 132, 29, 6, 115, 69, 160, 8, 117, 72, 46, 184, 152, 181, 34, 67, 66, 76, 104, 105, 94, 81, 57, 172, 21, 97, 170, 177, 125, 130, 121, 198, 96, 48, 136, 73, 82, 87, 179, 88, 24, 27, 3, 151, 98, 167, 51, 85, 59, 64, 140, 154, 26, 158, 145, 28, 149, 116, 147, 86, 185, 162, 192, 54, 114, 10, 90, 153, 129, 127, 80, 150, 99, 39, 171, 74, 20, 14, 2, 110, 118, 196, 187, 70, 190, 89, 120, 133, 183, 30, 38, 47, 40]
 ```
 
-**Steepest 2-opt / random start:** cost=50299
+**Steepest 2-opt / random start:** cost=50821
 
 ```python
 [151, 122, 117, 8, 120, 133, 136, 172, 160, 69, 168, 189, 183, 130, 30, 21, 38, 47, 140, 154, 97, 155, 71, 40, 60, 45, 134, 175, 36, 197, 29, 132, 178, 103, 6, 180, 115, 170, 125, 158, 145, 28, 149, 116, 147, 42, 121, 198, 58, 96, 48, 89, 72, 46, 76, 162, 192, 54, 187, 70, 190, 81, 94, 105, 61, 139, 196, 114, 148, 10, 127, 80, 52, 129, 90, 153, 14, 2, 20, 74, 171, 99, 179, 87, 82, 85, 107, 59, 73, 51, 167, 181, 152, 34, 24, 67, 66, 27, 3, 184]
@@ -298,13 +292,13 @@ Below, for each instance and method, the cost and the ordered list of the 100 se
 [91, 36, 197, 132, 29, 6, 180, 115, 170, 177, 125, 26, 97, 154, 140, 47, 38, 21, 183, 30, 191, 130, 63, 121, 198, 96, 48, 43, 156, 32, 89, 57, 79, 185, 104, 54, 196, 114, 10, 90, 14, 2, 20, 153, 129, 127, 80, 192, 162, 76, 135, 27, 11, 66, 67, 24, 34, 152, 181, 126, 88, 179, 87, 82, 167, 51, 85, 59, 73, 98, 151, 122, 173, 184, 3, 86, 46, 72, 117, 8, 120, 133, 136, 172, 160, 69, 124, 4, 64, 33, 40, 141, 155, 71, 60, 157, 45, 134, 175, 62]
 ```
 
-**Greedy swap / random start:** cost=57674
+**Greedy swap / random start:** cost=58556
 
 ```python
 [24, 67, 74, 2, 9, 93, 110, 118, 90, 129, 80, 52, 182, 153, 14, 20, 171, 99, 179, 87, 82, 51, 73, 59, 85, 33, 64, 69, 160, 172, 136, 133, 96, 58, 198, 121, 120, 117, 151, 98, 27, 162, 192, 127, 54, 76, 3, 184, 46, 72, 86, 185, 104, 190, 70, 81, 94, 105, 148, 143, 10, 114, 196, 57, 89, 48, 147, 116, 149, 28, 65, 175, 134, 45, 157, 60, 155, 170, 177, 158, 130, 30, 21, 26, 125, 154, 140, 38, 47, 97, 115, 6, 29, 132, 197, 71, 40, 167, 181, 34]
 ```
 
-**Greedy 2-opt / random start:** cost=50398
+**Greedy 2-opt / random start:** cost=50178
 
 ```python
 [115, 6, 197, 29, 132, 65, 28, 149, 158, 125, 26, 154, 140, 47, 38, 176, 21, 183, 30, 130, 121, 198, 96, 48, 156, 89, 57, 190, 70, 81, 94, 105, 61, 139, 196, 114, 10, 54, 192, 80, 127, 129, 90, 52, 182, 153, 14, 118, 110, 2, 20, 74, 17, 171, 39, 99, 88, 87, 82, 179, 167, 51, 85, 59, 73, 25, 152, 181, 34, 24, 67, 66, 162, 104, 76, 46, 72, 120, 117, 8, 133, 136, 172, 160, 69, 122, 184, 3, 151, 64, 40, 60, 157, 45, 134, 175, 71, 155, 97, 170]
@@ -332,7 +326,7 @@ Example checker output:
 
 ```text
 TSPA/steepest_swap_greedy: best_ok=True best_cost=71955
-TSPB/steepest_swap_random: best_ok=True best_cost=50247
+TSPB/steepest_swap_random: best_ok=True best_cost=58560
 ```
 
 ## 7. Source code
@@ -343,7 +337,7 @@ https://github.com/skalskidaniel/evolutionary-computation/blob/main/lab3.ipynb
 
 1. **Local search improves on constructive heuristics.** Starting from the greedy construction, steepest
    and greedy local search both reach about 71955 on TSPA (vs 72011 best constructive) and 52542 on TSPB
-   (vs 50485 best constructive). Random starts improve substantially (e.g. TSPA 76153 vs random 263627).
+   (vs 50485 best constructive). Random starts improve substantially (e.g. TSPA 75944 vs random 263627).
 
 2. **Greedy minimizes evaluated moves per iteration.** Its lazy early-exit stops browsing a move kind as
    soon as an improving move is found (e.g. TSPA greedy-swap-random scans far fewer deltas than the full
