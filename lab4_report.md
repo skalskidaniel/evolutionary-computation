@@ -30,9 +30,7 @@ Methodological constraints (same as in Labs 1-3):
 - Every move delta is computed in `O(1)`; no neighbour solution is built explicitly and the objective
   is never recomputed from scratch inside the search.
 
-This is a **Selective / Orienteering-like TSP**: subset selection and permutation are optimized jointly.
-Node costs create a trade-off: a cheap but remote node can be worse than an expensive but well-located
-one. For this reason "nearest" in the candidate lists is never pure Euclidean distance.
+
 
 ## 2. Implemented algorithms — pseudocode
 
@@ -43,9 +41,8 @@ The neighbourhood used in this assignment is the one that proved best in Lab 3:
 **2-opt intra-route moves + inter-route node exchange**. Lab 4 compares two versions of the steepest
 local search using this neighbourhood:
 
-1. the full steepest local search (baseline, no candidate mechanism),
-2. the steepest local search restricted to candidate moves (the Lab 4 method).
-
+1. the full steepest local search (baseline, without candidates mechanisms)
+2. the steepest local search restricted to candidate moves
 ### 2.1 Candidate edges and candidate moves
 
 For each vertex `i`, the candidate list `cand[i]` contains the `K` vertices `j != i` minimizing
@@ -130,8 +127,7 @@ CANDIDATE_STEEPEST(tour, used, D, C, k, n, cand):
 ```
 
 The outer loop visits only the `k` selected nodes; the inner loop visits only the `K` candidate vertices
-of each selected node. Thus at most `2kK` moves are evaluated per iteration (`2 000` for `K = 10`),
-instead of about `14 850`. The full neighbourhood is never scanned and no move is tested only to reject
+of each selected node. The full neighbourhood is never scanned and no move is tested only to reject
 it as "not a candidate".
 
 Tie-breaking is deterministic: the first minimum returned by the vectorized evaluation is used. The only
@@ -292,65 +288,19 @@ https://github.com/skalskidaniel/evolutionary-computation/blob/main/lab4.ipynb
 
 1. **Candidate moves give the expected speed-up.** With `K = 10` the running time drops from 24.13 s to
    7.93 s on TSPA (3.04x) and from 25.82 s to 8.90 s on TSPB (2.90x). The number of evaluated move
-   deltas drops by about 8x; the smaller wall-clock speed-up is due to the vectorized baseline.
+   deltas drops by about 8x.
 2. **Quality is only slightly worse.** On TSPA the mean objective increases by about 5.2%; on TSPB it is
    essentially unchanged (0.06%), and the best candidate solution on TSPB (50375) is better than the
    best baseline solution (50586).
 3. **`K` is a quality/time knob.** `K = 5` is fastest but degrades quality visibly. `K = 15`/`20`
    recover most of the quality but reduce the speed-up to about 2x. `K = 10` is a good default.
-4. **The candidate mechanism is used correctly.** The search never scans the full neighbourhood and
+4. **The candidate mechanism is a wise trade-off.** The search never scans the full neighbourhood and
    never evaluates a move only to reject it as non-candidate. For every candidate edge `(p, v)`, both
    possible moves that introduce it are evaluated, for both intra-route 2-opt and inter-route node
    exchange.
 5. **The inter-route move adds a candidate edge.** The unselected node is inserted next to the selected
    anchor `p` (and the neighbouring selected node is removed), so the new edge `(p, v)` is actually part
    of the solution. This satisfies the crucial constraint from the assignment.
-6. **Delta evaluation is still `O(1)`.** Every candidate move is evaluated from the precomputed distance
-   matrix and node costs; no neighbour tour is constructed and no objective is recomputed from scratch.
 
-## Appendix A — Reference results from Lab 3 (all previous methods)
 
-These are the Lab 3 results, included for context. They were produced with a different random seed and
-different runs, so the timings are not directly comparable with the Lab 4 table above.
 
-### A.1 Objective function, mean (min-max)
-
-| Method | TSPA | TSPB |
-| :--- | :--- | :--- |
-| Random | 263626.5 (237157-289146) | 207023.5 (186439-231364) |
-| NN at end | 87476.6 (84362-90075) | 59397.3 (56007-63166) |
-| NN anywhere | 74347.0 (72328-77022) | 59480.3 (52915-66164) |
-| Greedy cycle | 73793.4 (72590-75281) | 59649.9 (55655-63734) |
-| 2-regret NN | 121360.3 (110950-135771) | 73649.8 (68761-79756) |
-| 2-regret cycle | 120378.8 (112806-128089) | 72484.8 (68150-77274) |
-| Weighted NN | 75549.4 (72419-78504) | 55698.9 (50485-61406) |
-| Weighted cycle | 73353.5 (72011-75532) | 57863.3 (52731-63370) |
-| Steepest swap / random start | 89958.6 (82117-101055) | 66252.6 (58560-75551) |
-| Steepest 2-opt / random start | 76152.8 (74006-79627) | 52652.4 (50821-55872) |
-| Steepest swap / greedy start | 73021.7 (71955-74861) | 57525.5 (52702-62933) |
-| Steepest 2-opt / greedy start | 73003.8 (71955-74861) | 57127.5 (52542-62301) |
-| Greedy swap / random start | 87692.3 (81049-96180) | 64222.3 (58556-72748) |
-| Greedy 2-opt / random start | 75944.0 (74165-78097) | 52507.0 (50178-55159) |
-| Greedy swap / greedy start | 73032.1 (71955-74877) | 57530.6 (52702-62933) |
-| Greedy 2-opt / greedy start | 72977.8 (71955-74711) | 57184.8 (52542-62500) |
-
-### A.2 Running times, total (initial-solution) seconds per 200 runs
-
-| Method | TSPA | TSPB |
-| :--- | :--- | :--- |
-| Random | 0.01 (0.01) | 0.01 (0.00) |
-| NN at end | 0.17 (0.16) | 0.13 (0.13) |
-| NN anywhere | 2.11 (2.11) | 1.78 (1.78) |
-| Greedy cycle | 2.35 (2.35) | 2.35 (2.35) |
-| 2-regret NN | 5.55 (5.54) | 5.09 (5.09) |
-| 2-regret cycle | 5.65 (5.65) | 5.71 (5.70) |
-| Weighted NN | 4.72 (4.72) | 5.08 (5.08) |
-| Weighted cycle | 5.49 (5.49) | 5.60 (5.60) |
-| Steepest swap / random start | 27.03 (0.00) | 22.84 (0.00) |
-| Steepest 2-opt / random start | 13.70 (0.00) | 11.44 (0.00) |
-| Steepest swap / greedy start | 6.49 (0.03) | 7.32 (0.03) |
-| Steepest 2-opt / greedy start | 6.06 (0.03) | 6.04 (0.03) |
-| Greedy swap / random start | 24.03 (0.00) | 19.94 (0.00) |
-| Greedy 2-opt / random start | 24.06 (0.00) | 26.64 (0.00) |
-| Greedy swap / greedy start | 8.81 (0.03) | 13.50 (0.04) |
-| Greedy 2-opt / greedy start | 7.68 (0.03) | 13.43 (0.04) |
