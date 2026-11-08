@@ -108,8 +108,7 @@ pairs as special cases.
 ### 2.3 Starting solutions
 
 - **Random:** `k` distinct nodes sampled uniformly and shuffled; 200 independent solutions.
-- **Greedy:** the best constructive heuristic from Lab 2 (weighted 2-regret + best change, cycle
-  insertion, equal weights) started from each of the `n = 200` nodes as the starting node.
+- **Greedy:** the best constructive heuristic from Lab 2 started from each of the `n = 200` nodes as the starting node.
 
 This gives 8 methods: {steepest, greedy} × {swap, 2-opt} × {random start, greedy start}.
 Each method is run 200 times.
