@@ -9,8 +9,7 @@ inter-route node exchange**. The baseline is the full steepest local search with
 
 ## 1. Description of the problem
 
-We are given a set of `n = 200` nodes (instances `TSPA`, `TSPB` in `data/TSPA.csv`, `data/TSPB.csv`).
-Each row is `x;y;cost` (the files have no header line):
+We are given a set of `n = 200` nodes (instances `TSPA`, `TSPB` in `data/TSPA.csv`, `data/TSPB.csv`).:
 
 - `(x, y)` — position in the plane,
 - `cost[i] >= 0` — price paid if node `i` is visited.
@@ -102,8 +101,7 @@ LM_STEEPEST(tour, used, D, C, k, n):
 ```
 
 New moves are evaluated with their edges in the direction they appear in the current tour, so moves whose
-edges were reversed by a previous 2-opt are matched by case 3 ("both reversed"). The LM mechanism is used
-separately from candidate moves (candidate moves are not part of this assignment).
+edges were reversed by a previous 2-opt are matched by case 3 ("both reversed"). 
 
 The only randomness is the random starting solution (`k` distinct nodes sampled uniformly without
 replacement and shuffled).
@@ -129,13 +127,6 @@ mechanism.
 | Full steepest 2-opt (baseline) | 1.5253 | 1.8633 | 1 997 116 | 2 004 244 |
 | LM steepest 2-opt | 0.2556 | 0.2511 | 175 453 | 171 518 |
 
-The LM method evaluates roughly **12x fewer move deltas per run** than the full steepest search
-(~171k vs ~2.0M), which is the intended benefit of reusing previously evaluated deltas. In this
-vectorized NumPy implementation, however, the baseline scans the whole neighbourhood in one fast array
-pass per iteration, whereas LM carries Python-level bookkeeping (position maps, edge-direction checks,
-stale-move removal) and a full re-evaluation whenever LM runs out of applicable moves. As a result LM is
-about **2x slower in wall-clock time** here; in a non-vectorized implementation the delta reuse would be
-the dominant saving.
 
 ## 4. Visualization of the best solutions
 
